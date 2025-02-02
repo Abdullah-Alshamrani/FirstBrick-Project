@@ -19,7 +19,7 @@ A robust API system designed for real estate investment platforms, enabling secu
 ## Account
 
 
-**Account Service**
+-- **Account Service**
 POST /v1/user : Register a new user.
 POST /v1/login : Authenticate and return JWT token.
 GET /v1/user/{user_id} : Fetch user profile information.
