@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FirstBrickAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+289efb6a4fc3b955a64d05934a70f13ff331b737")]
 [assembly: System.Reflection.AssemblyProductAttribute("FirstBrickAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FirstBrickAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
