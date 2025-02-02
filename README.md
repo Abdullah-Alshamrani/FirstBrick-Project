@@ -15,7 +15,8 @@ A robust API system designed for real estate investment platforms, enabling secu
 ---
 
 📜 Key API Endpoints
-Account
+
+**Account
 Method	Endpoint	Description
 POST	/api/account/login	User login
 POST	/api/account/register	User registration
