@@ -40,3 +40,14 @@ A robust API system designed for real estate investment platforms, enabling secu
 - **POST** `/v1/ApplepayTopup`: Mock endpoint to add funds directly to the user's account.
 - **GET** `/v1/balance`: Retrieve the user's current account balance.
 - **GET** `/v1/transactions`: Retrieve a paginated list of the user's transaction history.
+
+
+----
+
+## 📬 Contact
+
+- **Name**: Abdullah Alshamrani  
+- **Email**: Abdullah.Alshamrani.A@gmail.com (mailto:Abdullah.Alshamrani.A@gmail.com)  
+- **Phone Number**: [+966 536997497)  
+
+
