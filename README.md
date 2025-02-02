@@ -17,23 +17,23 @@ A robust API system designed for real estate investment platforms, enabling secu
 📜 Key API Endpoints
 
 ## Account
-Method	Endpoint	Description
-POST	/api/account/login	User login
-POST	/api/account/register	User registration
-GET	/api/account	Get all users (Admin only)
-GET	/api/account/{id}	Get user by ID
-PUT	/api/account/{id}	Update user profile
-Investment
-Method	Endpoint	Description
-POST	/api/investment/project	Create a new project (Authorized)
-GET	/api/investment/projects	Get all investment projects
-POST	/api/investment/invest	Invest in a project (Authorized)
-Payment
-Method	Endpoint	Description
-POST	/api/payment/applepaytopup	Top up using Apple Pay
-GET	/api/payment/balance	Get user balance
-GET	/api/payment/transactions	Get user transactions
-Portfolio
-Method	Endpoint	Description
-GET	/v1/portfolio	Get user portfolio
-GET	/v1/portfolio/{projectId}	Get portfolio details by project
+
+
+**Account Service**
+POST /v1/user : Register a new user.
+POST /v1/login : Authenticate and return JWT token.
+GET /v1/user/{user_id} : Fetch user profile information.
+PUT /v1/user/{user_id} : Update user profile.
+**Investment Service**
+POST /v1/project : Create a new real estate project.
+GET /v1/projects : View all projects.
+POST /v1/invest : Contribute to a project.
+**Portfolio Service**
+GET /v1/portfolio : View user's investment portfolio.
+GET /v1/portfolio/{project_id} : View specific project details in the
+portfolio.
+**Payment Service**
+POST /v1/ApplepayTopup : Mock endpoint, add funds to the user account
+directly..
+GET /v1/balance : returns the user balance.
+GET /v1/transactions : returns a paginated list of user transactions.
