@@ -47,7 +47,7 @@ A robust API system designed for real estate investment platforms, enabling secu
 ## 📬 Contact
 
 - **Name**: Abdullah Alshamrani  
-- **Email**: Abdullah.Alshamrani.A@gmail.com (mailto:Abdullah.Alshamrani.A@gmail.com)  
+- **Email**: Abdullah.Alshamrani.A@gmail.com
 - **Phone Number**: [+966 536997497)  
 
 
