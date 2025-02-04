@@ -8,6 +8,7 @@ VillaCapital
 
 using FirstBrickAPI.Data;
 using FirstBrickAPI.Models;
+using FirstBrickAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,15 @@ namespace FirstBrickAPI.Controllers
     {
         private readonly FirstBrickContext _context;
 
-        public InvestmentController(FirstBrickContext context)
+        // Rabbitmq Server
+        private readonly RabbitMqProducer _rabbitMqProducer;
+
+
+        public InvestmentController(FirstBrickContext context, RabbitMqProducer rabbitMqProducer)
         {
             _context = context;
+            _rabbitMqProducer = rabbitMqProducer; // declaring rabbitmq producer
+
         }
 
         //  Create a New Real Estate Project.
@@ -84,6 +91,13 @@ namespace FirstBrickAPI.Controllers
             _context.UserBalances.Update(userBalance);
 
             await _context.SaveChangesAsync();
+
+
+            // send async message to RabbitMq
+            var message = $"User {userId} invested {request.Amount} in Project {request.ProjectId}";
+            _rabbitMqProducer.SendMessage(message); // I fixed the error of not implementing async messages.
+
+
             return Ok(new { message = "Investment successful!", investment });
         }
 
