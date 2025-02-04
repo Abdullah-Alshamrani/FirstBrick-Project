@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FirstBrickAPI.Services;
+
 
 namespace FirstBrickAPI.Controllers
 { //user investment portfolio opreations
@@ -24,9 +26,11 @@ namespace FirstBrickAPI.Controllers
     {
         private readonly FirstBrickContext _context;
 
-        public PortfolioController(FirstBrickContext context) // injrct DBs context.
+    private readonly RabbitMqProducer _rabbitMqProducer;
+        public PortfolioController(FirstBrickContext context, RabbitMqProducer rabbitMqProducer) // injrct DBs context.
         {
             _context = context;
+            _rabbitMqProducer = rabbitMqProducer;
         }
 
         // v1/portfolio - Get the authenticated user's entire investment portfolio
@@ -47,6 +51,9 @@ namespace FirstBrickAPI.Controllers
             if (!portfolio.Any())
                 return NotFound(new { message = "No investments found in the portfolio." });
 
+
+            var message = $"User {userId} retrived their portfolio.";
+            _rabbitMqProducer.SendMessage(message); //sent asynch
             return Ok(portfolio);
         }
 
@@ -67,6 +74,9 @@ namespace FirstBrickAPI.Controllers
 
             if (portfolioItem == null)
                 return NotFound(new { message = $"No portfolio details found for project ID {projectId}." });
+
+            var message = $"User {userId} retrived  portfolio for Project: {projectId}.";
+             _rabbitMqProducer.SendMessage(message); //sent asynch
 
             return Ok(portfolioItem);
         }
