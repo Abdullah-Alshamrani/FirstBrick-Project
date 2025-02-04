@@ -14,24 +14,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
-
+// importing services folder 
+using FirstBrickAPI.Services;
 
 [ApiController]
 [Route("api/account")]
 public class AccountController : ControllerBase
 {
+
+    
     // Database context for querying and updating user data.
     private readonly FirstBrickContext _context;
     private readonly string _jwtKey;
     private readonly string _jwtIssuer;
     private readonly string _jwtAudience;
+    private readonly RabbitMqProducer _rabbitMqProducer;
 
-    public AccountController(IConfiguration configuration, FirstBrickContext context)
+
+    public AccountController(IConfiguration configuration, FirstBrickContext context, RabbitMqProducer rabbitMqProducer)
     {
         _context = context;
         _jwtKey = configuration["JwtSettings:Key"] ?? throw new ArgumentNullException("JwtSettings:Key");
         _jwtIssuer = configuration["JwtSettings:Issuer"] ?? throw new ArgumentNullException("JwtSettings:Issuer");
         _jwtAudience = configuration["JwtSettings:Audience"] ?? throw new ArgumentNullException("JwtSettings:Audience");
+        _rabbitMqProducer = rabbitMqProducer;
     }
     // POST: api/account/login - Allows users to authenticate and receive a JWT token.
 
@@ -77,6 +83,10 @@ public class AccountController : ControllerBase
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
+
+        // assync event to RabbitMQq
+        var message = $"NEW user registered: {user.Username} - Role: {user.Role}";
+        _rabbitMqProducer.SendMessage(message); // message sent asycn
 
         return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
     }
@@ -155,6 +165,11 @@ public class AccountController : ControllerBase
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
+
+            var message = $"User Profile Updates:  {user.Username} (ID: {user.UserId})";
+            _rabbitMqProducer.SendMessage(message); //sent asych
+
+
             return Ok(new { Message = "User profile updated successfully." });
         }
         catch (Exception ex)
