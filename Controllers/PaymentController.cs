@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
+// importing services folder 
+using FirstBrickAPI.Services;
+
+
 namespace FirstBrickAPI.Controllers
 {
     //Handles user payment-related operations, including balance top-ups and transaction retrieval.
@@ -24,9 +28,12 @@ namespace FirstBrickAPI.Controllers
     {
         private readonly FirstBrickContext _context;
 
-        public PaymentController(FirstBrickContext context)
+        private readonly RabbitMqProducer _rabbitMqProducer;
+        public PaymentController(FirstBrickContext context, RabbitMqProducer rabbitMqProducer)
         {
             _context = context;
+            _rabbitMqProducer = rabbitMqProducer; // declaring rabbitmq producer
+
         }
 
         // Apple Pay Top-Up
@@ -70,6 +77,10 @@ namespace FirstBrickAPI.Controllers
             _context.Transactions.Add(transaction);
 
             await _context.SaveChangesAsync();
+
+            var message = $"User {userId} topped up {request.Amount} vis apple pay";
+            _rabbitMqProducer.SendMessage(message); // I fixed the error of not implementing async messages.
+
 
             return Ok(new { message = "Top-up successful.", newBalance = userBalance.Balance });
         }
